@@ -7,6 +7,10 @@ const Languages = {
     name: 'Arabic',
     nativeName: 'العربية',
   },
+  de: {
+    name: 'German',
+    nativeName: 'Deutsch',
+  },
   en: {
     name: 'English',
     nativeName: 'English',

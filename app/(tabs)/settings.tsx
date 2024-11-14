@@ -9,6 +9,7 @@ import {
   IconButton,
   Snackbar,
   Icon,
+  Text,
 } from 'react-native-paper'
 
 import Locales from '@/lib/locales'
@@ -53,7 +54,7 @@ const Settings = () => {
 
   const themeColors =
     Colors[
-      settings.theme === 'auto' ? (colorScheme ?? 'light') : settings.theme
+    settings.theme === 'auto' ? (colorScheme ?? 'light') : settings.theme
     ]
 
   return (
@@ -263,10 +264,9 @@ const Settings = () => {
       )}
 
       <Surface elevation={0} style={styles.screen}>
-        <ScreenInfo
-          title={Locales.t('titleSettings')}
-          path="app/(tabs)/settings.tsx"
-        />
+        <ScreenInfo title={Locales.t('titleSettings')}>
+          <Text>{Locales.t('contentToFollow')}</Text>
+        </ScreenInfo>
       </Surface>
 
       <Button
@@ -275,19 +275,18 @@ const Settings = () => {
         onPress={() =>
           Platform.OS !== 'web'
             ? SecureStore.setItemAsync('settings', JSON.stringify(settings))
-                .then(() =>
-                  setMessage({
-                    visible: true,
-                    content: Locales.t('restartApp'),
-                  }),
-                )
-                .catch((res) =>
-                  setMessage({
-                    visible: true,
-                    content: res.message,
-                  }),
-                )
-            : setMessage({
+              .then(() =>
+                setMessage({
+                  visible: true,
+                  content: Locales.t('restartApp'),
+                }),
+              )
+              .catch((res) =>
+                setMessage({
+                  visible: true,
+                  content: res.message,
+                }),
+              ) : setMessage({
                 visible: true,
                 content: Locales.t('notAvailable'),
               })

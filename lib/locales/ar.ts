@@ -3,6 +3,7 @@
  */
 
 const Arabic = {
+  contentToFollow: 'Content to follow',
   login: 'تسجيل الدخول',
   signup: 'إنشاء حساب',
   profile: 'الملف الشخصي',
@@ -20,8 +21,6 @@ const Arabic = {
   darkMode: 'داكن',
   color: 'اللون',
   changeColor: 'تغيير لون السمة',
-  changeScreenCode:
-    'قم بتغيير أي نص، احفظ الملف، وسيتم تحديث التطبيق الخاص بك تلقائيًا',
   goHome: 'الذهاب إلى الشاشة الرئيسية',
   openScreenCode: 'افتح الكود لهذه الشاشة',
   save: 'حفظ',

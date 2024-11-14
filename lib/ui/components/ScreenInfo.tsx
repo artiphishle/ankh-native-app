@@ -1,24 +1,23 @@
+import { ReactNode } from 'react'
 import { Chip, Text } from 'react-native-paper'
 
-import Locales from '@/lib/locales'
 import GradientBackground from '@/lib/ui/components/GradientBackground'
 
-const ScreenInfo = (props: { title: string; path: string }) => (
+const ScreenInfo = ({ children, title }: Props) => (
   <>
     <GradientBackground />
 
-    <Text variant="displaySmall">{props.title}</Text>
-
-    <Text variant="bodyLarge">{Locales.t('openScreenCode')}</Text>
+    <Text variant="displaySmall">{title}</Text>
 
     <Chip textStyle={{ fontFamily: 'JetBrainsMono_400Regular' }}>
-      {props.path}
+      {children}
     </Chip>
-
-    <Text variant="bodyLarge" style={{ textAlign: 'center' }}>
-      {Locales.t('changeScreenCode')}
-    </Text>
   </>
 )
+
+interface Props {
+  readonly children: ReactNode
+  readonly title: string
+}
 
 export default ScreenInfo
