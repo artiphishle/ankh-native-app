@@ -94,7 +94,7 @@ const RootLayoutNav = () => {
     <PaperProvider
       theme={
         Themes[
-          settings.theme === 'auto' ? (colorScheme ?? 'dark') : settings.theme
+        settings.theme === 'auto' ? (colorScheme ?? 'dark') : settings.theme
         ][settings.color]
       }
     >
