@@ -1,3 +1,4 @@
+import { signUp } from 'aws-amplify/auth'
 import { Image } from 'expo-image'
 import { router } from 'expo-router'
 import { Formik } from 'formik'
@@ -44,7 +45,15 @@ const SignUp = () => (
           firstName: '',
           lastName: '',
         }}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={async ({ password, username }) => {
+          console.log(username)
+          try {
+            await signUp({ password, username })
+            console.log('SignUp successful!')
+          } catch (error: any) {
+            console.error(error)
+          }
+        }}
         validationSchema={Yup.object().shape({
           username: Yup.string()
             .min(3, 'Too Short!')

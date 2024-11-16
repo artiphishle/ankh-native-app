@@ -1,9 +1,11 @@
+import { Authenticator } from '@aws-amplify/ui-react'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import {
   useFonts,
   JetBrainsMono_400Regular,
 } from '@expo-google-fonts/jetbrains-mono'
 import { NotoSans_400Regular } from '@expo-google-fonts/noto-sans'
+import { Amplify } from 'aws-amplify'
 import * as Localization from 'expo-localization'
 import { SplashScreen, Stack } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
@@ -14,6 +16,11 @@ import { PaperProvider } from 'react-native-paper'
 import Locales from '@/lib/locales'
 import { Setting } from '@/lib/types'
 import { StackHeader, Themes } from '@/lib/ui'
+
+import awsExports from '../aws-exports'
+import '@aws-amplify/ui-react/styles.css'
+
+Amplify.configure(awsExports)
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -41,16 +48,10 @@ const RootLayout = () => {
   }, [error])
 
   React.useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync()
-    }
+    if (loaded) SplashScreen.hideAsync()
   }, [loaded])
 
-  if (!loaded) {
-    return null
-  }
-
-  return <RootLayoutNav />
+  return loaded ? <RootLayoutNav /> : null
 }
 
 const RootLayoutNav = () => {
@@ -60,6 +61,7 @@ const RootLayoutNav = () => {
     color: 'default',
     language: 'auto',
   })
+  const { color, theme } = settings
 
   // Load settings from the device
   React.useEffect(() => {
@@ -91,31 +93,40 @@ const RootLayoutNav = () => {
   }, [])
 
   return (
-    <PaperProvider
-      theme={
-        Themes[
-        settings.theme === 'auto' ? (colorScheme ?? 'dark') : settings.theme
-        ][settings.color]
-      }
-    >
-      <Stack
-        screenOptions={{
-          animation: 'slide_from_bottom',
-          header: (props) => (
-            <StackHeader navProps={props} children={undefined} />
-          ),
-        }}
-      >
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="drawer" options={{ headerShown: false }} />
-        <Stack.Screen name="search" options={{ title: Locales.t('search') }} />
-        <Stack.Screen
-          name="modal"
-          options={{ title: Locales.t('titleModal'), presentation: 'modal' }}
-        />
-      </Stack>
-    </PaperProvider>
+    <Authenticator>
+      {({ signOut, user }) => (
+        <PaperProvider
+          theme={
+            Themes[theme === 'auto' ? (colorScheme ?? 'dark') : theme][color]
+          }
+        >
+          <div>User: {user?.username}</div>
+          <Stack
+            screenOptions={{
+              animation: 'slide_from_bottom',
+              header: (props) => (
+                <StackHeader navProps={props} children={undefined} />
+              ),
+            }}
+          >
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="drawer" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="search"
+              options={{ title: Locales.t('search') }}
+            />
+            <Stack.Screen
+              name="modal"
+              options={{
+                title: Locales.t('titleModal'),
+                presentation: 'modal',
+              }}
+            />
+          </Stack>
+        </PaperProvider>
+      )}
+    </Authenticator>
   )
 }
 
