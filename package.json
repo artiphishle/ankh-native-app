@@ -3,7 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "build:web": "npx expo export --platform web",
+    "build:web": "npm i && npx expo export --platform web",
     "start": "expo start",
     "android": "expo start --android",
     "android:tunnel": "expo start --android -- --tunnel",
