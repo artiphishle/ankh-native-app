@@ -1,4 +1,4 @@
-import { signUp } from 'aws-amplify/auth'
+import { signUp } from '@aws-amplify/auth'
 import { Image } from 'expo-image'
 import { router } from 'expo-router'
 import { Formik } from 'formik'
@@ -39,16 +39,24 @@ const SignUp = () => (
 
       <Formik
         initialValues={{
-          username: '',
-          password: '',
           email: '',
           firstName: '',
           lastName: '',
+          password: '',
+          username: '',
         }}
-        onSubmit={async ({ password, username }) => {
-          console.log(username)
+        onSubmit={async ({ password, username, firstName, lastName }) => {
           try {
-            await signUp({ password, username })
+            await signUp({
+              password,
+              username,
+              options: {
+                userAttributes: {
+                  firstName,
+                  lastName,
+                },
+              },
+            })
             console.log('SignUp successful!')
           } catch (error: any) {
             console.error(error)

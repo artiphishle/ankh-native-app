@@ -55,9 +55,15 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@aws-amplify/backend": "^1.7.0",
+    "@aws-amplify/backend-cli": "^1.4.2",
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "aws-cdk": "^2.167.1",
+    "aws-cdk-lib": "^2.167.1",
+    "constructs": "^10.4.2",
+    "esbuild": "^0.24.0",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^7.1.2",
     "eslint-config-universe": "^12.0.0",
@@ -65,6 +71,7 @@
     "jest-expo": "~51.0.4",
     "prettier": "^3.2.5",
     "react-test-renderer": "18.2.0",
-    "typescript": "~5.3.3"
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
   }
 }
