@@ -13,6 +13,7 @@ import React from 'react'
 import { Platform, useColorScheme } from 'react-native'
 import { PaperProvider } from 'react-native-paper'
 
+import { conf, EAnkhConfAuthMode } from '@/conf/ankh.conf'
 import Locales from '@/lib/locales'
 import { Setting } from '@/lib/types'
 import { StackHeader, Themes } from '@/lib/ui'
@@ -92,42 +93,37 @@ const RootLayoutNav = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <PaperProvider
-          theme={
-            Themes[theme === 'auto' ? (colorScheme ?? 'dark') : theme][color]
-          }
-        >
-          <div>User: {user?.username}</div>
-          <Stack
-            screenOptions={{
-              animation: 'slide_from_bottom',
-              header: (props) => (
-                <StackHeader navProps={props} children={undefined} />
-              ),
-            }}
-          >
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="drawer" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="search"
-              options={{ title: Locales.t('search') }}
-            />
-            <Stack.Screen
-              name="modal"
-              options={{
-                title: Locales.t('titleModal'),
-                presentation: 'modal',
-              }}
-            />
-          </Stack>
-        </PaperProvider>
-      )}
-    </Authenticator>
+  const App = () => (
+    <PaperProvider
+      theme={
+        Themes[theme === 'auto' ? (colorScheme ?? 'dark') : theme][color]
+      }
+    >
+      <Stack
+        screenOptions={{
+          animation: 'slide_from_bottom',
+          header: (props) => (
+            <StackHeader navProps={props} children={undefined} />
+          ),
+        }}
+      >
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="drawer" options={{ headerShown: false }} />
+        <Stack.Screen name="search" options={{ title: Locales.t('search') }} />
+        <Stack.Screen
+          name="modal"
+          options={{
+            title: Locales.t('titleModal'),
+            presentation: 'modal',
+          }}
+        />
+      </Stack>
+    </PaperProvider>
   )
+
+  if (conf.auth.mode === EAnkhConfAuthMode.InApp) return <App />
+  return <Authenticator>{({ signOut, user }) => <App />}</Authenticator>
 }
 
 export default RootLayout
