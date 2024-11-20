@@ -1,7 +1,7 @@
 {
   "name": "ankh-native-app",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "build:web": "npm i && npx expo export --platform web",
     "start": "expo start",
@@ -55,7 +55,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^1.7.0",
+    "@aws-amplify/backend": "^1.8.0",
     "@aws-amplify/backend-cli": "^1.4.2",
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
