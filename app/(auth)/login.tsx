@@ -39,7 +39,8 @@ const Login = () => (
       initialValues={{ username: '', password: '' }}
       onSubmit={async ({ password, username }) => {
         console.log(username)
-        await signIn({ password, username })
+        const signInOutput = await signIn({ password, username })
+        console.log('login > isSignedIn:', signInOutput.isSignedIn)
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string()
