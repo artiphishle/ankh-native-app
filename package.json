@@ -55,8 +55,6 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^1.8.0",
-    "@aws-amplify/backend-cli": "^1.4.2",
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
