@@ -1,7 +1,7 @@
 {
   "name": "ankh-native-app",
   "main": "expo-router/entry",
-  "version": "1.0.2",
+  "version": "1.0.0",
   "scripts": {
     "build:web": "npm i && npx expo export --platform web",
     "start": "expo start",
