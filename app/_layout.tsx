@@ -17,10 +17,10 @@ import Locales from '@/lib/locales'
 import { Setting } from '@/lib/types'
 import { StackHeader, Themes } from '@/lib/ui'
 
-import awsExports from '../aws-exports'
+import outputs from '../amplify_outputs.json'
 import '@aws-amplify/ui-react/styles.css'
 
-Amplify.configure(awsExports)
+Amplify.configure(outputs)
 
 export {
   // Catch any errors thrown by the Layout component.
