@@ -3,11 +3,12 @@ import { router } from 'expo-router'
 import React from 'react'
 import { Button, Surface, Text } from 'react-native-paper'
 
-import { conf, EAnkhConfAuthMode } from '@/conf/ankh.conf'
+import AnkhConf from '@/conf/ankh.json'
 import Locales from '@/lib/locales'
 import { ScreenInfo, styles } from '@/lib/ui'
 
 const Profile = () => {
+  const conf = JSON.parse(JSON.stringify(AnkhConf))
   const { username } = useAuthenticator()
 
   return (
@@ -27,7 +28,7 @@ const Profile = () => {
           bottom: 0,
         }}
       >
-        {conf.auth.mode === EAnkhConfAuthMode.InApp && (
+        {conf.auth.mode === 'IN_APP' && (
           <>
             <Button
               mode="contained"
