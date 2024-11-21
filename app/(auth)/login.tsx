@@ -39,8 +39,8 @@ const Login = () => (
       initialValues={{ username: '', password: '' }}
       onSubmit={async ({ password, username }) => {
         console.log(username)
-        const signInOutput = await signIn({ password, username })
-        console.log('login > isSignedIn:', signInOutput.isSignedIn)
+        const { isSignedIn } = await signIn({ password, username })
+        if (isSignedIn) router.push('/(tabs)/profile')
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string()
@@ -106,7 +106,7 @@ const Login = () => (
     >
       New here?
     </Button>
-  </Surface>
+  </Surface >
 )
 
 export default Login

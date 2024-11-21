@@ -1,4 +1,4 @@
-import { getCurrentUser, type AuthUser } from '@aws-amplify/auth'
+import { fetchUserAttributes } from '@aws-amplify/auth'
 import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { Button, Headline, Surface } from 'react-native-paper'
@@ -7,12 +7,16 @@ import Locales from '@/lib/locales'
 import { ScreenInfo, styles } from '@/lib/ui'
 
 const Profile = () => {
-  const [user, setUser] = useState<AuthUser>()
+  const [user, setUser] = useState<any>()
 
   useEffect(() => {
     async function fetchCurrentUser() {
-      setUser(await getCurrentUser())
-      console.log('Profile > user:', user)
+      try {
+        const { email } = (await fetchUserAttributes())
+        setUser({ email });
+      } catch (error: any) {
+        console.error(error);
+      }
     }
     fetchCurrentUser()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -21,7 +25,7 @@ const Profile = () => {
   return (
     <Surface style={styles.screen}>
       <ScreenInfo title={Locales.t('profile')}>
-        <Headline>{user?.username}</Headline>
+        <Headline>Hello, {user?.email || '{guest}'}!</Headline>
       </ScreenInfo>
 
       <Surface
