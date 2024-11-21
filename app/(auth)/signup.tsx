@@ -53,12 +53,11 @@ const SignUp = () => {
                 username,
                 options: {
                   userAttributes: {
-                    firstName,
-                    lastName,
+                    'custom:firstName': firstName,
+                    'custom:lastName': lastName,
                   },
                 },
               })
-              console.log('SignUp successful!')
             } catch (error: any) {
               console.error(error)
             }
@@ -111,6 +110,7 @@ const SignUp = () => {
                   maxLength={64}
                   mode="outlined"
                   label="Password"
+                  textContentType="password"
                   value={values.password}
                   error={!!errors.password}
                   onBlur={handleBlur('password')}
