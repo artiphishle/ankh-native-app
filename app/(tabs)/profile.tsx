@@ -1,6 +1,6 @@
-import { useAuthenticator } from '@aws-amplify/ui-react'
+import { AuthUser, getCurrentUser } from '@aws-amplify/auth'
 import { router } from 'expo-router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Surface, Text } from 'react-native-paper'
 
 import AnkhConf from '@/conf/ankh.json'
@@ -9,12 +9,21 @@ import { ScreenInfo, styles } from '@/lib/ui'
 
 const Profile = () => {
   const conf = JSON.parse(JSON.stringify(AnkhConf))
-  const { username } = useAuthenticator()
+  const [user, setUser] = useState<AuthUser>()
+
+  useEffect(() => {
+    async function fetchCurrentUser() {
+      setUser(await getCurrentUser())
+      console.log('User:', user)
+    }
+    fetchCurrentUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Surface style={styles.screen}>
       <ScreenInfo title={Locales.t('profile')}>
-        <Text>Hallo, {username}! </Text>
+        <Text>Hello, {user?.username}! </Text>
       </ScreenInfo>
 
       <Surface
