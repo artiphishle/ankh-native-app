@@ -6,6 +6,7 @@ import DrawerContent from '@/lib/ui/components/DrawerContent'
 import DrawerHeader from '@/lib/ui/components/DrawerHeader'
 import GradientBackground from '@/lib/ui/components/GradientBackground'
 import LoadingIndicator from '@/lib/ui/components/LoadingIndicator'
+import Profile from '@/lib/ui/components/Profile'
 import ScreenInfo from '@/lib/ui/components/ScreenInfo'
 import StackHeader from '@/lib/ui/components/StackHeader'
 import TabBar from '@/lib/ui/components/TabBar'
@@ -16,6 +17,7 @@ export {
   DrawerHeader,
   GradientBackground,
   LoadingIndicator,
+  Profile,
   ScreenInfo,
   StackHeader,
   TabBar,
