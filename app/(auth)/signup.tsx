@@ -2,7 +2,7 @@ import { signUp } from '@aws-amplify/auth'
 import { Image } from 'expo-image'
 import { router } from 'expo-router'
 import { Formik } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import { ScrollView } from 'react-native'
 import {
   Button,
@@ -10,14 +10,26 @@ import {
   TextInput,
   HelperText,
   Text,
+  Banner,
 } from 'react-native-paper'
 import * as Yup from 'yup'
 
 import { styles } from '@/lib/ui'
 
+enum ESignUpStatus {
+  Default,
+  IsSigningUp,
+  IsSignedUp,
+}
+
 const SignUp = () => {
+  const [signUpStatus, setSignUpStatus] = useState(ESignUpStatus.Default)
+
   return (
     <ScrollView style={{ flex: 1 }}>
+      <Banner visible={signUpStatus === ESignUpStatus.IsSignedUp}>
+        <Text>Perfect! Check your eMail to verify your new account.</Text>
+      </Banner>
       <Surface style={{ ...styles.screen, alignItems: undefined }}>
         <Image
           alt="Logo"
@@ -48,6 +60,7 @@ const SignUp = () => {
           }}
           onSubmit={async ({ password, username, firstName, lastName }) => {
             try {
+              setSignUpStatus(ESignUpStatus.IsSigningUp)
               await signUp({
                 password,
                 username,
@@ -58,6 +71,7 @@ const SignUp = () => {
                   },
                 },
               })
+              setSignUpStatus(ESignUpStatus.IsSignedUp)
             } catch (error: any) {
               console.error(error)
             }
@@ -90,6 +104,7 @@ const SignUp = () => {
             <>
               <Surface elevation={0}>
                 <TextInput
+                  disabled={signUpStatus !== ESignUpStatus.Default}
                   maxLength={64}
                   mode="outlined"
                   label="Username"
@@ -107,6 +122,7 @@ const SignUp = () => {
 
               <Surface elevation={0}>
                 <TextInput
+                  disabled={signUpStatus !== ESignUpStatus.Default}
                   secureTextEntry
                   maxLength={64}
                   mode="outlined"
@@ -126,6 +142,7 @@ const SignUp = () => {
 
               <Surface elevation={0}>
                 <TextInput
+                  disabled={signUpStatus !== ESignUpStatus.Default}
                   maxLength={64}
                   mode="outlined"
                   label="Email"
@@ -143,6 +160,7 @@ const SignUp = () => {
 
               <Surface elevation={0}>
                 <TextInput
+                  disabled={signUpStatus !== ESignUpStatus.Default}
                   maxLength={64}
                   mode="outlined"
                   label="First name"
@@ -160,6 +178,7 @@ const SignUp = () => {
 
               <Surface elevation={0}>
                 <TextInput
+                  disabled={signUpStatus !== ESignUpStatus.Default}
                   maxLength={64}
                   mode="outlined"
                   label="Last name"
@@ -175,8 +194,14 @@ const SignUp = () => {
                 </HelperText>
               </Surface>
 
-              <Button mode="contained" onPress={() => handleSubmit()}>
-                Sign up
+              <Button
+                mode="contained"
+                loading={signUpStatus === ESignUpStatus.IsSigningUp}
+                onPress={() => handleSubmit()}
+              >
+                {signUpStatus === ESignUpStatus.IsSigningUp
+                  ? 'Signing up'
+                  : 'Sign up'}
               </Button>
             </>
           )}

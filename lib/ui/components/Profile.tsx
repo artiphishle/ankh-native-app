@@ -1,21 +1,27 @@
-import { fetchUserAttributes, UserAttributeKey } from '@aws-amplify/auth'
+import {
+  fetchUserAttributes,
+  signOut,
+  UserAttributeKey,
+} from '@aws-amplify/auth'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { Avatar, Button, Surface, Text } from 'react-native-paper'
+import { Avatar, Button, Surface } from 'react-native-paper'
 
-import AnkhConf from '@/conf/ankh.json'
-import Locales from '@/lib/locales'
-import { ScreenInfo, styles } from '@/lib/ui'
+// import Locales from '@/lib/locales'
+import { styles } from '@/lib/ui'
 
 export default function Profile() {
-  const conf = JSON.parse(JSON.stringify(AnkhConf))
-  const [user, setUser] = useState<Partial<Record<UserAttributeKey, string>>>()
+  const [user, setUser] =
+    useState<Partial<Record<UserAttributeKey, string> | null>>(null)
   const [userInitials, setUserInitials] = useState('??')
 
   useEffect(() => {
     async function fetchCurrentUser() {
       try {
-        const userAttributes = (await fetchUserAttributes()) || {}
+        const userAttributes = await fetchUserAttributes()
+
+        if (!userAttributes?.email) return
+
         setUser(userAttributes)
         setUserInitials(
           `${userAttributes['custom:firstName']?.[0]}${userAttributes['custom:lastName']?.[0]}`,
@@ -33,9 +39,6 @@ export default function Profile() {
   return (
     <Surface style={styles.screen}>
       <Avatar.Text size={240} label={userInitials} />
-      <ScreenInfo title={Locales.t('profile')}>
-        <Text>Hello, {user?.['custom:firstName'] || 'guest'}! </Text>
-      </ScreenInfo>
 
       <Surface
         elevation={0}
@@ -48,7 +51,17 @@ export default function Profile() {
           bottom: 0,
         }}
       >
-        {conf.auth.mode === 'IN_APP' && (
+        {user ? (
+          <Button
+            mode="contained"
+            onPress={() => {
+              signOut()
+              router.push('/profile')
+            }}
+          >
+            Sign Out
+          </Button>
+        ) : (
           <>
             <Button
               mode="contained"
