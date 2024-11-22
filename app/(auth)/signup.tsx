@@ -1,4 +1,4 @@
-import { signUp } from '@aws-amplify/auth'
+import { confirmSignUp, signUp } from '@aws-amplify/auth'
 import { Image } from 'expo-image'
 import { router } from 'expo-router'
 import { Formik } from 'formik'
@@ -10,7 +10,6 @@ import {
   TextInput,
   HelperText,
   Text,
-  Banner,
 } from 'react-native-paper'
 import * as Yup from 'yup'
 
@@ -20,16 +19,67 @@ enum ESignUpStatus {
   Default,
   IsSigningUp,
   IsSignedUp,
+  IsConfirmingSignUp,
 }
 
 const SignUp = () => {
+  const [username, setUsername] = useState('')
   const [signUpStatus, setSignUpStatus] = useState(ESignUpStatus.Default)
+
+  if (
+    signUpStatus === ESignUpStatus.IsSignedUp ||
+    signUpStatus === ESignUpStatus.IsConfirmingSignUp
+  )
+    return (
+      <ScrollView style={{ flex: 1 }}>
+        <Surface style={{ ...styles.screen, alignItems: undefined }}>
+          <Text>Great! Check your eMail to confirm your account</Text>
+          <Formik
+            initialValues={{ confirmationCode: '' }}
+            onSubmit={async ({ confirmationCode }) => {
+              try {
+                setSignUpStatus(ESignUpStatus.IsConfirmingSignUp)
+                await confirmSignUp({
+                  confirmationCode,
+                  username,
+                })
+                router.push('/(auth)/login')
+              } catch (error: any) {
+                console.error(error)
+              }
+            }}
+          >
+            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+              <Surface>
+                <TextInput
+                  label="Code"
+                  mode="outlined"
+                  maxLength={6}
+                  placeholder="000000"
+                  right={64 - values.confirmationCode.length}
+                  onBlur={handleBlur('confirmationCode')}
+                  error={!!errors.confirmationCode}
+                  value={values.confirmationCode}
+                  onChangeText={handleChange('confirmationCode')}
+                />
+                <Button
+                  mode="contained"
+                  loading={signUpStatus === ESignUpStatus.IsConfirmingSignUp}
+                  onPress={() => handleSubmit()}
+                >
+                  {signUpStatus === ESignUpStatus.IsConfirmingSignUp
+                    ? 'Confirming eMail'
+                    : 'Confirm eMail'}
+                </Button>
+              </Surface>
+            )}
+          </Formik>
+        </Surface>
+      </ScrollView>
+    )
 
   return (
     <ScrollView style={{ flex: 1 }}>
-      <Banner visible={signUpStatus === ESignUpStatus.IsSignedUp}>
-        <Text>Perfect! Check your eMail to verify your new account.</Text>
-      </Banner>
       <Surface style={{ ...styles.screen, alignItems: undefined }}>
         <Image
           alt="Logo"
@@ -61,7 +111,7 @@ const SignUp = () => {
           onSubmit={async ({ password, username, firstName, lastName }) => {
             try {
               setSignUpStatus(ESignUpStatus.IsSigningUp)
-              await signUp({
+              const { nextStep } = await signUp({
                 password,
                 username,
                 options: {
@@ -71,7 +121,15 @@ const SignUp = () => {
                   },
                 },
               })
-              setSignUpStatus(ESignUpStatus.IsSignedUp)
+              setUsername(username)
+              switch (nextStep.signUpStep) {
+                case 'CONFIRM_SIGN_UP':
+                  setSignUpStatus(ESignUpStatus.IsSignedUp)
+                  break
+                case 'DONE':
+                  router.push('/(auth)/login')
+                  break
+              }
             } catch (error: any) {
               console.error(error)
             }

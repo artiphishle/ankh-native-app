@@ -10,10 +10,17 @@ import { Avatar, Button, Surface } from 'react-native-paper'
 // import Locales from '@/lib/locales'
 import { styles } from '@/lib/ui'
 
+enum ESignOutStatus {
+  Default,
+  IsSigningOut,
+}
+
 export default function Profile() {
+  const INITIAL_USER_INITIALS = '??'
   const [user, setUser] =
     useState<Partial<Record<UserAttributeKey, string> | null>>(null)
-  const [userInitials, setUserInitials] = useState('??')
+  const [userInitials, setUserInitials] = useState(INITIAL_USER_INITIALS)
+  const [signOutStatus, setSignOutStatus] = useState(ESignOutStatus.Default)
 
   useEffect(() => {
     async function fetchCurrentUser() {
@@ -54,12 +61,19 @@ export default function Profile() {
         {user ? (
           <Button
             mode="contained"
-            onPress={() => {
-              signOut()
+            disabled={signOutStatus === ESignOutStatus.IsSigningOut}
+            loading={signOutStatus === ESignOutStatus.IsSigningOut}
+            onPress={async () => {
+              setSignOutStatus(ESignOutStatus.IsSigningOut)
+              await signOut()
+              setUser(null)
+              setUserInitials(INITIAL_USER_INITIALS)
               router.push('/profile')
             }}
           >
-            Sign Out
+            {signOutStatus === ESignOutStatus.IsSigningOut
+              ? 'Signing out'
+              : 'Sign Out'}
           </Button>
         ) : (
           <>
