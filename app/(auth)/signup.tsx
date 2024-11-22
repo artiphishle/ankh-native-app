@@ -107,6 +107,7 @@ const SignUp = () => {
 
               <Surface elevation={0}>
                 <TextInput
+                  secureTextEntry
                   maxLength={64}
                   mode="outlined"
                   label="Password"

@@ -1,7 +1,7 @@
-import { fetchUserAttributes } from '@aws-amplify/auth'
+import { fetchUserAttributes, UserAttributeKey } from '@aws-amplify/auth'
 import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { Button, Surface, Text } from 'react-native-paper'
+import { Avatar, Button, Surface, Text } from 'react-native-paper'
 
 import AnkhConf from '@/conf/ankh.json'
 import Locales from '@/lib/locales'
@@ -9,13 +9,19 @@ import { ScreenInfo, styles } from '@/lib/ui'
 
 export default function Profile() {
   const conf = JSON.parse(JSON.stringify(AnkhConf))
-  const [user, setUser] = useState<any>()
+  const [user, setUser] = useState<Partial<Record<UserAttributeKey, string>>>()
+  const [userInitials, setUserInitials] = useState('??')
 
   useEffect(() => {
     async function fetchCurrentUser() {
       try {
-        const { email } = await fetchUserAttributes()
-        setUser({ email })
+        const userAttributes = (await fetchUserAttributes()) || {}
+        setUser(userAttributes)
+        setUserInitials(
+          `${userAttributes['custom:firstName']?.[0]}${userAttributes['custom:lastName']?.[0]}`,
+        )
+        console.log('UserAttributes:', userAttributes)
+        console.log('UserInitials:', userInitials)
       } catch (error: any) {
         console.error(error)
       }
@@ -26,8 +32,9 @@ export default function Profile() {
 
   return (
     <Surface style={styles.screen}>
+      <Avatar.Text size={240} label={userInitials} />
       <ScreenInfo title={Locales.t('profile')}>
-        <Text>Hello, {user?.email || 'guest'}! </Text>
+        <Text>Hello, {user?.['custom:firstName'] || 'guest'}! </Text>
       </ScreenInfo>
 
       <Surface
