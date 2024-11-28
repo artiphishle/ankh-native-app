@@ -3,21 +3,19 @@ import { Chip, Text } from 'react-native-paper'
 
 import GradientBackground from '@/lib/ui/components/GradientBackground'
 
-const ScreenInfo = ({ children, title }: Props) => (
-  <>
-    <GradientBackground />
+export default function ScreenInfo({ children, title }: Props) {
+  const fontFamily = 'JetBrainsMono_400Regular'
 
-    <Text variant="displaySmall">{title}</Text>
-
-    <Chip textStyle={{ fontFamily: 'JetBrainsMono_400Regular' }}>
-      {children || null}
-    </Chip>
-  </>
-)
+  return (
+    <>
+      <GradientBackground />
+      <Text variant="displaySmall">{title}</Text>
+      {children && <Chip textStyle={{ fontFamily }}>{children}</Chip>}
+    </>
+  )
+}
 
 interface Props {
   readonly title: string
   readonly children?: ReactNode
 }
-
-export default ScreenInfo

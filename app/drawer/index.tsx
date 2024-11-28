@@ -6,7 +6,7 @@ import { ScreenInfo, styles } from '@/lib/ui'
 
 const DrawerHome = () => (
   <Surface style={styles.screen}>
-    <ScreenInfo title={Locales.t('titleHome')} path="app/drawer/index.tsx" />
+    <ScreenInfo title={Locales.t('titleHome')} />
   </Surface>
 )
 
