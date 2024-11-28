@@ -10,14 +10,14 @@ const ScreenInfo = ({ children, title }: Props) => (
     <Text variant="displaySmall">{title}</Text>
 
     <Chip textStyle={{ fontFamily: 'JetBrainsMono_400Regular' }}>
-      {children}
+      {children || null}
     </Chip>
   </>
 )
 
 interface Props {
-  readonly children: ReactNode
   readonly title: string
+  readonly children?: ReactNode
 }
 
 export default ScreenInfo
