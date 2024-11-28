@@ -13,7 +13,7 @@ import React from 'react'
 import { Platform, useColorScheme } from 'react-native'
 import { PaperProvider } from 'react-native-paper'
 
-import AnkhConf from '@/conf/ankh.json'
+import { AnkhConfig } from '@/config/ankh'
 import Locales from '@/lib/locales'
 import { Setting } from '@/lib/types'
 import { StackHeader, Themes } from '@/lib/ui'
@@ -23,7 +23,7 @@ import outputs from '../amplify_outputs.json'
 import '@aws-amplify/ui-react/styles.css'
 
 Amplify.configure(outputs)
-const conf = JSON.parse(JSON.stringify(AnkhConf))
+const conf = JSON.parse(JSON.stringify(AnkhConfig))
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -97,9 +97,7 @@ const RootLayoutNav = () => {
 
   const App = () => (
     <PaperProvider
-      theme={
-        Themes[theme === 'auto' ? (colorScheme ?? 'dark') : theme][color]
-      }
+      theme={Themes[theme === 'auto' ? (colorScheme ?? 'dark') : theme][color]}
     >
       <Stack
         screenOptions={{
