@@ -34,13 +34,7 @@ const TabBar = (props: BottomTabBarProps) => (
     }}
     getLabelText={({ route }) => {
       const { options } = props.descriptors[route.key]
-      const label =
-        options.tabBarLabel !== undefined
-          ? options.tabBarLabel
-          : options.title !== undefined
-            ? options.title
-            : route.title
-
+      const label = options.title
       return label
     }}
   />

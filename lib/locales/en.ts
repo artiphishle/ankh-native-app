@@ -3,6 +3,8 @@
  */
 
 const English = {
+  home: 'Home',
+  settings: 'Settings',
   contentToFollow: 'Content to follow.',
   login: 'Log in',
   signup: 'Sign up',
@@ -18,7 +20,8 @@ const English = {
   mode: 'Mode',
   changeMode: 'Switch between light and dark mode',
   lightMode: 'Light',
-  darkMode: 'Dark', color: 'Color',
+  darkMode: 'Dark',
+  color: 'Color',
   changeColor: 'Change theme color',
   goHome: 'Go to home screen',
   openScreenCode: 'Open up the code for this screen',

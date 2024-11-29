@@ -3,6 +3,8 @@
  */
 
 const German = {
+  home: 'Startseite',
+  settings: 'Einstellungen',
   contentToFollow: 'Content to follow.',
   login: 'Login',
   signup: 'Registrieren',

@@ -13,7 +13,7 @@ import React from 'react'
 import { Platform, useColorScheme } from 'react-native'
 import { PaperProvider } from 'react-native-paper'
 
-import { AnkhConfig } from '@/config/ankh'
+import { AnkhConfig, EAnkhAuthMode } from '@/config/ankh'
 import Locales from '@/lib/locales'
 import { Setting } from '@/lib/types'
 import { StackHeader, Themes } from '@/lib/ui'
@@ -23,7 +23,7 @@ import outputs from '../amplify_outputs.json'
 import '@aws-amplify/ui-react/styles.css'
 
 Amplify.configure(outputs)
-const conf = JSON.parse(JSON.stringify(AnkhConfig))
+const ANKH = JSON.parse(JSON.stringify(AnkhConfig))
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -75,13 +75,11 @@ const RootLayoutNav = () => {
             (res) => console.log(res),
           )
         }
-
         setSettings(JSON.parse(result ?? JSON.stringify(settings)))
       })
     } else {
       setSettings({ ...settings, theme: colorScheme ?? 'light' })
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -122,7 +120,7 @@ const RootLayoutNav = () => {
     </PaperProvider>
   )
 
-  if (conf.auth.mode === 'IN_APP') return <App />
+  if (ANKH.auth.mode === EAnkhAuthMode.InApp) return <App />
   return <Authenticator>{({ signOut, user }) => <App />}</Authenticator>
 }
 

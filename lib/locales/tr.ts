@@ -3,7 +3,9 @@
  */
 
 const Turkish = {
-  contentToFollow: '',
+  home: '{home?}',
+  settings: 'settings?}',
+  contentToFollow: '{contentToFollow?}',
   login: 'Giriş',
   signup: 'Hesap aç',
   profile: 'Profil',
