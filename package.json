@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "build:web": "npm i && npx expo export --platform web",
-    "ci": "npm run build",
+    "ci": "npm run build:web",
     "start": "expo start",
     "android": "expo start --android",
     "android:tunnel": "expo start --android -- --tunnel",
