@@ -3,7 +3,9 @@
  */
 
 const Arabic = {
-  contentToFollow: 'Content to follow',
+  home: '{home?}',
+  settings: '{settings?}',
+  contentToFollow: '{contentToFollow?}',
   login: 'تسجيل الدخول',
   signup: 'إنشاء حساب',
   profile: 'الملف الشخصي',

@@ -38,7 +38,6 @@ const Login = () => (
     <Formik
       initialValues={{ username: '', password: '' }}
       onSubmit={async ({ password, username }) => {
-        console.log(username)
         const { isSignedIn } = await signIn({ password, username })
         if (isSignedIn) router.push('/(tabs)/profile')
       }}

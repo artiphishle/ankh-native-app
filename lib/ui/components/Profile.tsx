@@ -33,8 +33,6 @@ export default function Profile() {
         setUserInitials(
           `${userAttributes['custom:firstName']?.[0]}${userAttributes['custom:lastName']?.[0]}`,
         )
-        console.log('UserAttributes:', userAttributes)
-        console.log('UserInitials:', userInitials)
       } catch (error: any) {
         console.error(error)
       }
