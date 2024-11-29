@@ -3,6 +3,11 @@
  */
 
 const German = {
+  signUpHeadline: 'Sei mit dabei!',
+  signingUp: 'Signing up',
+  signUp: 'Sign up',
+  signUpBody: 'Wir freuen uns, Dich dabei zu haben. Lass uns loslegen.',
+  signUpHaveExistingAccount: 'Account vorhanden?',
   home: 'Startseite',
   settings: 'Einstellungen',
   contentToFollow: 'Content to follow.',

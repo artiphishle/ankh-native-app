@@ -3,6 +3,11 @@
  */
 
 const Turkish = {
+  signUpHeadline: 'Join today!',
+  signingUp: 'Signing up',
+  signUp: 'Sign up',
+  signUpBody: "We're thrilled to have you on board. Let's get you set up.",
+  signUpHaveExistingAccount: 'Already have an account?',
   home: '{home?}',
   settings: 'settings?}',
   contentToFollow: '{contentToFollow?}',
