@@ -3,6 +3,13 @@
  */
 
 const English = {
+  email: 'E-Mail',
+  password: 'Password',
+  signUpHeadline: 'Join today!',
+  signingUp: 'Signing up',
+  signUp: 'Sign up',
+  signUpBody: "We're thrilled to have you on board. Let's get you set up.",
+  signUpHaveExistingAccount: 'Already have an account?',
   home: 'Home',
   settings: 'Settings',
   contentToFollow: 'Content to follow.',

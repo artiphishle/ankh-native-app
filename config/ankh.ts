@@ -71,7 +71,7 @@ export const AnkhConfig: IAnkhConfig = {
       name: 'profile',
       route: '/profile',
       title: 'Profile',
-      icon: '',
+      icon: 'account',
       uis: [
         {
           id: v4(),
