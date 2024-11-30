@@ -37,6 +37,7 @@ enum EAnkhFormFieldType {
 }
 interface IAnkhFormField {
   readonly id: string
+  readonly label?: string
   readonly maxLen?: number
   readonly minLen?: number
   readonly placeholder?: string
@@ -99,8 +100,8 @@ export default function SignUp() {
   const loginWith = (({ email, phone, externalProviders }) => {
     const hasNoLoginWith = !email && !phone && !externalProviders
     if (externalProviders || hasNoLoginWith) throw new Error('Nope!')
-    if (email) return { id: 'username', name: 'email' }
-    if (phone) return { id: 'username', name: 'phone' }
+    if (email) return { id: 'username', label: 'email' }
+    if (phone) return { id: 'username', label: 'phone' }
   })(cognito.loginWith)
   if (!loginWith) throw new Error(`Missing config: 'auth.cognito.loginWith'`)
 
@@ -112,10 +113,12 @@ export default function SignUp() {
   const signUpFields: IAnkhFormField[] = [
     {
       id: 'username',
-      placeholder: loginWith.name,
+      label: t(loginWith.label),
+      placeholder: t(loginWith.label),
     },
     {
       id: 'password',
+      label: t('password'),
       type: EAnkhFormFieldType.Password,
       placeholder: 'Password',
     },
@@ -254,6 +257,7 @@ export default function SignUp() {
                 {signUpFields.map(
                   ({
                     id,
+                    label,
                     maxLen: maxLength = 64,
                     placeholder = '',
                     type = EAnkhFormFieldType.Text,
@@ -262,8 +266,7 @@ export default function SignUp() {
                       maxLength,
                       placeholder,
                       disabled: signUpStatus !== ESignUpStatus.Default,
-                      label:
-                        id /* t(id === 'username' ? 'email' : id), // @todo */,
+                      label: t(label || id),
                       mode: 'outlined',
                       secureTextEntry: type === EAnkhFormFieldType.Password,
                       value: values[id],

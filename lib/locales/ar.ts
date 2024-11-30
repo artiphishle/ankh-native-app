@@ -3,6 +3,8 @@
  */
 
 const Arabic = {
+  email: 'E-Mail',
+  password: 'Password',
   signUpHeadline: 'Join today!',
   signingUp: 'Signing up',
   signUp: 'Sign up',

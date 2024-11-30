@@ -3,6 +3,8 @@
  */
 
 const German = {
+  email: 'E-Mail',
+  password: 'Passwort',
   signUpHeadline: 'Sei mit dabei!',
   signingUp: 'Signing up',
   signUp: 'Sign up',
