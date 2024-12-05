@@ -4,6 +4,8 @@
 
 const German = {
   email: 'E-Mail',
+  firstName: 'Vorname',
+  lastName: 'Name',
   password: 'Passwort',
   signUpHeadline: 'Sei mit dabei!',
   signingUp: 'Signing up',

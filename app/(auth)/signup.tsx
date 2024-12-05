@@ -61,7 +61,6 @@ function Logo() {
 }
 
 export default function SignUp() {
-  const { t } = Locales
   const [username, setUsername] = useState('')
   const [signUpStatus, setSignUpStatus] = useState(ESignUpStatus.Default)
   const isReadyForConfirmation = [
@@ -91,6 +90,7 @@ export default function SignUp() {
 
     return {
       id,
+      label: Locales.t(id.replace(/custom:/, '')),
       type,
       min: values.minLen,
       max: values.maxLen,
@@ -113,12 +113,12 @@ export default function SignUp() {
   const signUpFields: IAnkhFormField[] = [
     {
       id: 'username',
-      label: t(loginWith.label),
-      placeholder: t(loginWith.label),
+      label: Locales.t(loginWith.label),
+      placeholder: loginWith.label,
     },
     {
       id: 'password',
-      label: t('password'),
+      label: Locales.t('password'),
       type: EAnkhFormFieldType.Password,
       placeholder: 'Password',
     },
@@ -213,11 +213,11 @@ export default function SignUp() {
         <Logo />
 
         <Text variant="headlineLarge" style={{ textAlign: 'center' }}>
-          {/* t('signUpHeadline')*/} SignUpHeadline
+          {Locales.t('signUpHeadline')}
         </Text>
 
         <Text variant="bodyLarge" style={{ textAlign: 'center' }}>
-          {/*t('signUpBody')*/} SignUpBody
+          {Locales.t('signUpBody')}
         </Text>
 
         <Formik
@@ -266,7 +266,7 @@ export default function SignUp() {
                       maxLength,
                       placeholder,
                       disabled: signUpStatus !== ESignUpStatus.Default,
-                      label: t(label || id),
+                      label: label || id,
                       mode: 'outlined',
                       secureTextEntry: type === EAnkhFormFieldType.Password,
                       value: values[id],
@@ -292,8 +292,8 @@ export default function SignUp() {
                   onPress={() => handleSubmit()}
                 >
                   {signUpStatus === ESignUpStatus.IsSigningUp
-                    ? t('signingUp')
-                    : t('signUp')}
+                    ? 'signingUp'
+                    : 'signUp'}
                 </Button>
               </>
             )

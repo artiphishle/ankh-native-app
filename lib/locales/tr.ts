@@ -4,6 +4,8 @@
 
 const Turkish = {
   email: 'E-Mail',
+  firstName: '{firstName?}',
+  lastName: '{lastName?}',
   password: 'Password',
   signUpHeadline: 'Join today!',
   signingUp: 'Signing up',

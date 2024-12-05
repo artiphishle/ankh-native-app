@@ -4,6 +4,8 @@
 
 const English = {
   email: 'E-Mail',
+  firstName: 'Firstname',
+  lastName: 'Lastname}',
   password: 'Password',
   signUpHeadline: 'Join today!',
   signingUp: 'Signing up',
