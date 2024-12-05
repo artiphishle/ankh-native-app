@@ -12,101 +12,115 @@ import {
 } from 'react-native-paper'
 import * as Yup from 'yup'
 
+import { AnkhConfig as ANKH } from '@/config/ankh'
+import Locales from '@/lib/locales'
 import { styles } from '@/lib/ui'
 
-const Login = () => (
-  <Surface style={{ ...styles.screen, alignItems: undefined }}>
-    <Image
-      alt="Logo"
-      source={require('@/assets/images/icon.png')}
-      style={{
-        height: 150,
-        width: 150,
-        borderRadius: 16,
-        marginBottom: 32,
-        marginHorizontal: 'auto',
-      }}
-    />
+export default function Login() {
+  const { cognito } = ANKH.auth
 
-    <Text variant="headlineLarge" style={{ textAlign: 'center' }}>
-      Welcome
-    </Text>
-    <Text variant="bodyLarge" style={{ textAlign: 'center' }}>
-      We're excited to have you back. Please log in to continue.
-    </Text>
+  /** @todo duplicate from 'signUp' */
+  // Set 'username' (can be email, phone, externalProviders)
+  const loginWith = (({ email, phone, externalProviders }) => {
+    const hasNoLoginWith = !email && !phone && !externalProviders
+    if (externalProviders || hasNoLoginWith) throw new Error('Nope!')
+    if (email) return { id: 'username', label: 'email' }
+    if (phone) return { id: 'username', label: 'phone' }
+  })(cognito.loginWith)
+  if (!loginWith) throw new Error(`Missing config: 'auth.cognito.loginWith'`)
 
-    <Formik
-      initialValues={{ username: '', password: '' }}
-      onSubmit={async ({ password, username }) => {
-        const { isSignedIn } = await signIn({ password, username })
-        if (isSignedIn) router.push('/(tabs)/profile')
-      }}
-      validationSchema={Yup.object().shape({
-        username: Yup.string()
-          .min(3, 'Too Short!')
-          .max(64, 'Too Long!')
-          .required('Please enter a username.'),
-        password: Yup.string()
-          .min(8, 'Too Short! must be at least 8 characters.')
-          .max(64, 'Too Long!')
-          .matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
-            'Must 1 uppercase, 1 lowercase, 1 number and 1 special case character',
-          )
-          .required('Please enter a password'),
-      })}
-    >
-      {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-        <>
-          <Surface elevation={0}>
-            <TextInput
-              maxLength={64}
-              mode="outlined"
-              label="Username"
-              value={values.username}
-              error={!!errors.username}
-              onBlur={handleBlur('username')}
-              right={64 - values.username.length}
-              placeholder="Enter your username..."
-              onChangeText={handleChange('username')}
-            />
-            <HelperText type="error" visible={!!errors.username}>
-              {errors.username}
-            </HelperText>
-          </Surface>
+  return (
+    <Surface style={{ ...styles.screen, alignItems: undefined }}>
+      <Image
+        alt="Logo"
+        source={require('@/assets/images/icon.png')}
+        style={{
+          height: 150,
+          width: 150,
+          borderRadius: 16,
+          marginBottom: 32,
+          marginHorizontal: 'auto',
+        }}
+      />
 
-          <Surface elevation={0}>
-            <TextInput
-              secureTextEntry
-              maxLength={64}
-              mode="outlined"
-              label="Password"
-              value={values.password}
-              error={!!errors.password}
-              onBlur={handleBlur('password')}
-              right={64 - values.password.length}
-              placeholder="Enter your password..."
-              onChangeText={handleChange('password')}
-            />
-            <HelperText type="error" visible={!!errors.password}>
-              {errors.password}
-            </HelperText>
-          </Surface>
+      <Text variant="headlineLarge" style={{ textAlign: 'center' }}>
+        Welcome
+      </Text>
+      <Text variant="bodyLarge" style={{ textAlign: 'center' }}>
+        We're excited to have you back. Please log in to continue.
+      </Text>
 
-          <Button mode="contained" onPress={() => handleSubmit()}>
-            Login
-          </Button>
-        </>
-      )}
-    </Formik>
+      <Formik
+        initialValues={{ username: '', password: '' }}
+        onSubmit={async ({ password, username }) => {
+          const { isSignedIn } = await signIn({ password, username })
+          if (isSignedIn) router.push('/(tabs)/profile')
+        }}
+        validationSchema={Yup.object().shape({
+          username: Yup.string()
+            .min(3, 'Too Short!')
+            .max(64, 'Too Long!')
+            .required(`Please enter a ${Locales.t(loginWith.label)}.`),
+          password: Yup.string()
+            .min(8, 'Too Short! must be at least 8 characters.')
+            .max(64, 'Too Long!')
+            .matches(
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
+              'Must 1 uppercase, 1 lowercase, 1 number and 1 special case character',
+            )
+            .required(`Please enter a ${Locales.t('password')}`),
+        })}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+          <>
+            <Surface elevation={0}>
+              <TextInput
+                maxLength={64}
+                mode="outlined"
+                label={Locales.t(loginWith.label)}
+                value={values.username}
+                error={!!errors.username}
+                onBlur={handleBlur('username')}
+                right={64 - values.username.length}
+                placeholder={`Enter your ${Locales.t(loginWith.label)}...`}
+                onChangeText={handleChange('username')}
+              />
+              <HelperText type="error" visible={!!errors.username}>
+                {errors.username}
+              </HelperText>
+            </Surface>
 
-    <Button
-      mode="contained-tonal"
-      onPress={() => router.push('/(auth)/signup')}
-    >
-      New here?
-    </Button>
-  </Surface>
-)
+            <Surface elevation={0}>
+              <TextInput
+                secureTextEntry
+                maxLength={64}
+                mode="outlined"
+                label={Locales.t('password')}
+                value={values.password}
+                error={!!errors.password}
+                onBlur={handleBlur('password')}
+                right={64 - values.password.length}
+                placeholder={`Enter your ${Locales.t('password')}...`}
+                onChangeText={handleChange('password')}
+              />
+              <HelperText type="error" visible={!!errors.password}>
+                {errors.password}
+              </HelperText>
+            </Surface>
 
-export default Login
+            <Button mode="contained" onPress={() => handleSubmit()}>
+              Login
+            </Button>
+          </>
+        )}
+      </Formik>
+
+      <Button
+        mode="contained-tonal"
+        onPress={() => router.push('/(auth)/signup')}
+      >
+        New here?
+      </Button>
+    </Surface>
+  )
+}

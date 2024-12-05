@@ -178,11 +178,12 @@ export default function SignUp() {
             {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
               <Surface>
                 <TextInput
+                  id="confirmationCode"
                   label="Code"
                   mode="outlined"
                   maxLength={6}
                   placeholder="000000"
-                  right={64 - values.confirmationCode.length}
+                  right={64 - values.confirmationCode?.length}
                   onBlur={handleBlur('confirmationCode')}
                   error={!!errors.confirmationCode}
                   value={values.confirmationCode}
@@ -223,17 +224,19 @@ export default function SignUp() {
         <Formik
           initialValues={initialValues}
           onSubmit={async (values) => {
+            const userAttributes = { ...values }
+            delete userAttributes.username
+            delete userAttributes.password
+
             try {
               setSignUpStatus(ESignUpStatus.IsSigningUp)
 
               const { nextStep } = await signUp({
-                username,
+                username: values.username,
                 password: values.password,
-                options: {
-                  userAttributes: values,
-                },
+                options: { userAttributes },
               })
-              setUsername(username)
+              setUsername(values.username)
 
               switch (nextStep.signUpStep) {
                 case 'CONFIRM_SIGN_UP':
