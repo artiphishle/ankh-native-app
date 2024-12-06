@@ -18,6 +18,9 @@ import { styles } from '@/lib/ui'
 
 export default function Login() {
   const { cognito } = ANKH.auth
+  const { logo, themes } = ANKH.brand
+  const [theme] = themes.filter((theme) => theme.active)
+  const { colors } = theme
 
   /** @todo duplicate from 'signUp' */
   // Set 'username' (can be email, phone, externalProviders)
@@ -29,11 +32,17 @@ export default function Login() {
   })(cognito.loginWith)
   if (!loginWith) throw new Error(`Missing config: 'auth.cognito.loginWith'`)
 
+  const cd = {
+    logo: logo
+      ? require('@/assets/images/logo.jpg')
+      : require('@/assets/images/icon.png'),
+  }
+
   return (
     <Surface style={{ ...styles.screen, alignItems: undefined }}>
       <Image
         alt="Logo"
-        source={require('@/assets/images/icon.png')}
+        source={cd.logo}
         style={{
           height: 150,
           width: 150,

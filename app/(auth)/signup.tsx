@@ -45,10 +45,12 @@ interface IAnkhFormField {
 }
 
 function Logo() {
+  const logo = require('@/assets/images/logo.jpg')
+
   return (
     <Image
       alt="Logo"
-      source={require('@/assets/images/icon.png')}
+      source={logo}
       style={{
         height: 150,
         width: 150,
@@ -70,6 +72,10 @@ export default function SignUp() {
 
   const { cognito } = ANKH.auth
   const { userAttributes = {} } = cognito
+  const { logo, themes } = ANKH.brand
+  const [theme] = themes.filter((theme) => theme.active)
+  const { colors } = theme
+
   const ids = Object.keys(userAttributes)
   const customFields: IAnkhFormField[] = ids.map((id) => {
     const values = userAttributes[id as any] as Record<string, unknown>
@@ -295,8 +301,8 @@ export default function SignUp() {
                   onPress={() => handleSubmit()}
                 >
                   {signUpStatus === ESignUpStatus.IsSigningUp
-                    ? 'signingUp'
-                    : 'signUp'}
+                    ? Locales.t('signingUp')
+                    : Locales.t('signUp')}
                 </Button>
               </>
             )
@@ -307,7 +313,7 @@ export default function SignUp() {
           mode="contained-tonal"
           onPress={() => router.push('/(auth)/login')}
         >
-          {/*t('signUpHaveExistingAccount')*/} Existing account?
+          {Locales.t('signUpHaveExistingAccount')}
         </Button>
       </Surface>
     </ScrollView>

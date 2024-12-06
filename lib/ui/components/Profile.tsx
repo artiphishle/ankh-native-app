@@ -9,6 +9,7 @@ import { Avatar, Button, Surface } from 'react-native-paper'
 
 // import Locales from '@/lib/locales'
 import { styles } from '@/lib/ui'
+import { AnkhConfig } from '@/config/ankh'
 
 enum ESignOutStatus {
   Default,
@@ -41,9 +42,19 @@ export default function Profile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const { brand } = AnkhConfig
+  const { themes } = brand
+  const [theme] = themes.filter((theme) => theme.active)
+  const { colors } = theme
+
   return (
     <Surface style={styles.screen}>
-      <Avatar.Text size={240} label={userInitials} />
+      <Avatar.Text
+        style={{ backgroundColor: colors.primary.bg }}
+        size={240}
+        color={colors.primary.text}
+        label={userInitials}
+      />
 
       <Surface
         elevation={0}
@@ -59,6 +70,8 @@ export default function Profile() {
         {user ? (
           <Button
             mode="contained"
+            textColor={colors.primary.text}
+            buttonColor={colors.primary.bg}
             disabled={signOutStatus === ESignOutStatus.IsSigningOut}
             loading={signOutStatus === ESignOutStatus.IsSigningOut}
             onPress={async () => {
@@ -76,6 +89,8 @@ export default function Profile() {
         ) : (
           <>
             <Button
+              textColor={colors.primary.text}
+              buttonColor={colors.primary.bg}
               mode="contained"
               onPress={() => router.push('/(auth)/login')}
             >
@@ -83,6 +98,8 @@ export default function Profile() {
             </Button>
 
             <Button
+              textColor={colors.primary.text}
+              buttonColor={colors.primary.bg}
               mode="contained"
               onPress={() => router.push('/(auth)/signup')}
             >
