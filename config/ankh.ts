@@ -1,4 +1,5 @@
 import type { AmplifyAuthProps } from '@/../../node_modules/@aws-amplify/backend-auth/lib/factory.d'
+import { Card } from 'react-native-paper'
 import { v4 } from 'uuid'
 
 export enum EAnkhAuthMode {
@@ -10,7 +11,7 @@ interface IAnkhUi {
   readonly name: string
   readonly conf?: Record<string, unknown>
 }
-interface IAnkhPage {
+export interface IAnkhPage {
   readonly id: string
   readonly name: string
   readonly route: string
@@ -18,7 +19,25 @@ interface IAnkhPage {
   readonly uis: IAnkhUi[]
   readonly icon?: string
 }
+interface IAnkhColorDefinition {
+  readonly text: string
+  readonly bg: string
+}
+interface IAnkhTheme {
+  readonly name: string
+  readonly colors: {
+    readonly primary: IAnkhColorDefinition
+    readonly default: IAnkhColorDefinition
+  }
+  readonly active?: boolean
+  readonly logo?: string
+}
+interface IAnkhBrand {
+  readonly logo?: string
+  readonly themes: IAnkhTheme[]
+}
 interface IAnkhConfig {
+  readonly brand: IAnkhBrand
   readonly auth: {
     readonly mode: EAnkhAuthMode
     readonly cognito: AmplifyAuthProps
@@ -26,7 +45,32 @@ interface IAnkhConfig {
   readonly pages: IAnkhPage[]
 }
 
+const COLORS = {
+  WHITE: '#fff',
+  RED: '#cf1444',
+  BLACK: '#000',
+}
+
 export const AnkhConfig: IAnkhConfig = {
+  brand: {
+    themes: [
+      {
+        name: 'light',
+        colors: {
+          default: {
+            text: COLORS.BLACK,
+            bg: COLORS.WHITE,
+          },
+          primary: {
+            text: COLORS.WHITE,
+            bg: COLORS.RED,
+          },
+        },
+        active: true,
+        logo: 'logo.jpg',
+      },
+    ],
+  },
   auth: {
     mode: EAnkhAuthMode.InApp,
     cognito: {
@@ -76,6 +120,29 @@ export const AnkhConfig: IAnkhConfig = {
         {
           id: v4(),
           name: 'Profile',
+        },
+      ],
+    },
+    {
+      id: v4(),
+      name: 'lesson',
+      route: '/lesson/1',
+      title: 'Lesson 1',
+      icon: 'school',
+      uis: [
+        {
+          id: v4(),
+          name: 'card',
+          conf: {
+            title: 'Title here',
+            content: '<video />',
+            actions: [
+              {
+                name: 'markAsComplete',
+                onClick: true,
+              },
+            ],
+          },
         },
       ],
     },
