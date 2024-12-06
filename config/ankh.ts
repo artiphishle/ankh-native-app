@@ -1,33 +1,91 @@
-import type { AmplifyAuthProps } from '@/../../node_modules/@aws-amplify/backend-auth/lib/factory.d'
-import { Card } from 'react-native-paper'
+import type { AmplifyAuthProps } from '@aws-amplify/backend-auth/lib/factory.d'
+import {
+  Appbar,
+  Button,
+  Card,
+  Dialog,
+  IconButton,
+  ListSectionProps,
+  Snackbar,
+  TextInput,
+  type AppbarProps,
+  type ButtonProps,
+  type CardProps,
+  type DialogProps,
+  type IconButtonProps,
+  type SnackbarProps,
+  type TextInputProps,
+} from 'react-native-paper'
+import ListSection from 'react-native-paper/lib/typescript/components/List/ListSection'
+import { Video, type ReactVideoProps } from 'react-native-video'
 import { v4 } from 'uuid'
+
+enum EAnkhUi {
+  Appbar = 'Appbar',
+  Button = 'Button',
+  Card = 'Card',
+  Dialog = 'Dialog',
+  IconButton = 'IconButton',
+  ListSection = 'ListSection',
+  Snackbar = 'Snackbar',
+  TextInput = 'TextInput',
+  Video = 'Video',
+}
+
+// Map EAnkhUi to UI components
+export const AnkhUiMap: Record<EAnkhUi, React.ComponentType<any>> = {
+  [EAnkhUi.Appbar]: Appbar,
+  [EAnkhUi.Button]: Button,
+  [EAnkhUi.Card]: Card,
+  [EAnkhUi.Dialog]: Dialog,
+  [EAnkhUi.IconButton]: IconButton,
+  [EAnkhUi.ListSection]: ListSection,
+  [EAnkhUi.Snackbar]: Snackbar,
+  [EAnkhUi.TextInput]: TextInput,
+  [EAnkhUi.Video]: Video,
+}
+
+// Props mapping for each UI type
+type UiPropsMap = {
+  [EAnkhUi.Appbar]: AppbarProps
+  [EAnkhUi.Button]: ButtonProps
+  [EAnkhUi.Card]: CardProps
+  [EAnkhUi.Dialog]: DialogProps
+  [EAnkhUi.IconButton]: IconButtonProps
+  [EAnkhUi.ListSection]: ListSectionProps
+  [EAnkhUi.Snackbar]: SnackbarProps
+  [EAnkhUi.TextInput]: TextInputProps
+  [EAnkhUi.Video]: ReactVideoProps
+}
+
+// Discriminated union for IAnkhUi
+export type IAnkhUi = {
+  [K in keyof UiPropsMap]: {
+    id: string
+    ui: K
+    props?: UiPropsMap[K]
+    uis?: IAnkhUi[]
+  }
+}[keyof UiPropsMap] // Flatten into a union
 
 export enum EAnkhAuthMode {
   Entire = 'ENTIRE',
   InApp = 'IN_APP',
 }
-interface IAnkhUi {
-  readonly id: string
-  readonly name: string
-  readonly conf?: Record<string, unknown>
-}
+
 export interface IAnkhPage {
   readonly id: string
   readonly name: string
   readonly route: string
   readonly title: string
-  readonly uis: IAnkhUi[]
+  readonly uis?: IAnkhUi[]
   readonly icon?: string
-}
-interface IAnkhColorDefinition {
-  readonly text: string
-  readonly bg: string
 }
 interface IAnkhTheme {
   readonly name: string
   readonly colors: {
-    readonly primary: IAnkhColorDefinition
-    readonly default: IAnkhColorDefinition
+    primary: { text: string; bg: string }
+    default: { text: string; bg: string }
   }
   readonly active?: boolean
   readonly logo?: string
@@ -100,15 +158,6 @@ export const AnkhConfig: IAnkhConfig = {
       route: '/',
       title: 'Home',
       icon: 'home',
-      uis: [
-        {
-          id: v4(),
-          name: 'Text',
-          conf: {
-            value: 'HomeText',
-          },
-        },
-      ],
     },
     {
       id: v4(),
@@ -116,12 +165,6 @@ export const AnkhConfig: IAnkhConfig = {
       route: '/profile',
       title: 'Profile',
       icon: 'account',
-      uis: [
-        {
-          id: v4(),
-          name: 'Profile',
-        },
-      ],
     },
     {
       id: v4(),
@@ -132,17 +175,12 @@ export const AnkhConfig: IAnkhConfig = {
       uis: [
         {
           id: v4(),
-          name: 'card',
-          conf: {
-            title: 'Title here',
-            content: '<video />',
-            actions: [
-              {
-                name: 'markAsComplete',
-                onClick: true,
-              },
-            ],
-          },
+          ui: EAnkhUi.Video,
+          props: { source: { uri: '@/assets/videos/lesson-01.mp4' } },
+        },
+        {
+          id: v4(),
+          ui: EAnkhUi.ListSection,
         },
       ],
     },
@@ -152,12 +190,6 @@ export const AnkhConfig: IAnkhConfig = {
       route: '/settings',
       title: 'Settings',
       icon: 'cog',
-      uis: [
-        {
-          id: v4(),
-          name: 'Settings',
-        },
-      ],
     },
   ],
 }

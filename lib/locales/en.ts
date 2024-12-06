@@ -3,6 +3,8 @@
  */
 
 const English = {
+  lesson: 'Lesson',
+  email: 'E-Mail',
   firstName: 'First name',
   lastName: 'Last name',
   password: 'Password',

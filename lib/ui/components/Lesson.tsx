@@ -1,49 +1,33 @@
-import {
-  Button,
-  Card,
-  Divider,
-  List,
-  Surface,
-  useTheme,
-} from 'react-native-paper'
+import { Fragment } from 'react'
+import { Surface, useTheme } from 'react-native-paper'
 
-import VideoPlayer from './VideoPlayer'
+import { AnkhConfig as ANKH, AnkhUiMap, type IAnkhUi } from '@/config/ankh'
 
 export default function Lesson() {
+  const { pages } = ANKH
+  const [page] = pages.filter((page) => page.name === 'lesson')
+  const { uis = [] } = page
   const theme = useTheme()
-  const lessons = [
-    { title: 'Lesson 1' },
-    { title: 'Lesson 2' },
-    { title: 'Lesson 3' },
-    { title: 'Lesson 4' },
-    { title: 'Lesson 5' },
-    { title: 'Lesson 6' },
-    { title: 'Lesson 7' },
-    { title: 'Lesson 8' },
-    { title: 'Lesson 9' },
-  ]
 
-  return (
-    <Surface>
-      <Surface elevation={1}>
-        <Card theme={theme}>
-          <Card.Title title="Lesson 01 Title" />
-          <Card.Content>
-            <VideoPlayer />
-          </Card.Content>
-        </Card>
-      </Surface>
-      <Surface elevation={1}>
-        <List.Section>
-          <List.Subheader>Lessons</List.Subheader>
-          {lessons.map(({ title }) => (
-            <List.Item
-              title={title}
-              left={() => <List.Icon icon="play-circle" />}
-            />
+  function renderComponent(config: IAnkhUi): JSX.Element | null {
+    const { ui, props, uis: childUis = [] } = config
+    const Component = AnkhUiMap[ui]
+
+    if (!Component) {
+      console.error(`No component found for ui: ${ui}`)
+      return null
+    }
+
+    // Render component with children if present
+    return (
+      <Component {...props}>
+        {childUis &&
+          childUis.map((childUi) => (
+            <Fragment key={childUi.id}>{renderComponent(childUi)}</Fragment>
           ))}
-        </List.Section>
-      </Surface>
-    </Surface>
-  )
+      </Component>
+    )
+  }
+
+  return <Surface theme={theme}>{uis.map((ui) => renderComponent(ui))}</Surface>
 }
