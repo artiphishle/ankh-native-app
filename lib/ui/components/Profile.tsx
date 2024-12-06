@@ -7,9 +7,9 @@ import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { Avatar, Button, Surface } from 'react-native-paper'
 
-// import Locales from '@/lib/locales'
-import { styles } from '@/lib/ui'
 import { AnkhConfig } from '@/config/ankh'
+import Locales from '@/lib/locales'
+import { styles } from '@/lib/ui'
 
 enum ESignOutStatus {
   Default,
@@ -27,7 +27,6 @@ export default function Profile() {
     async function fetchCurrentUser() {
       try {
         const userAttributes = await fetchUserAttributes()
-
         if (!userAttributes?.email) return
 
         setUser(userAttributes)
@@ -42,9 +41,7 @@ export default function Profile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const { brand } = AnkhConfig
-  const { themes } = brand
-  const [theme] = themes.filter((theme) => theme.active)
+  const [theme] = AnkhConfig.brand.themes.filter(({ active }) => !!active)
   const { colors } = theme
 
   return (
@@ -83,8 +80,8 @@ export default function Profile() {
             }}
           >
             {signOutStatus === ESignOutStatus.IsSigningOut
-              ? 'Signing out'
-              : 'Sign Out'}
+              ? Locales.t('signingOut')
+              : Locales.t('signOut')}
           </Button>
         ) : (
           <>
@@ -94,7 +91,7 @@ export default function Profile() {
               mode="contained"
               onPress={() => router.push('/(auth)/login')}
             >
-              Login
+              {Locales.t('login')}
             </Button>
 
             <Button
@@ -103,7 +100,7 @@ export default function Profile() {
               mode="contained"
               onPress={() => router.push('/(auth)/signup')}
             >
-              Sign Up
+              {Locales.t('signUp')}
             </Button>
           </>
         )}

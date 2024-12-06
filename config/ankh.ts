@@ -5,7 +5,6 @@ import {
   Card,
   Dialog,
   IconButton,
-  ListSectionProps,
   Snackbar,
   TextInput,
   type AppbarProps,
@@ -16,9 +15,11 @@ import {
   type SnackbarProps,
   type TextInputProps,
 } from 'react-native-paper'
-import ListSection from 'react-native-paper/lib/typescript/components/List/ListSection'
-import { Video, type ReactVideoProps } from 'react-native-video'
+import { type ReactVideoProps } from 'react-native-video'
 import { v4 } from 'uuid'
+
+import AnkhUiList, { type AnkhUiListProps } from '@/lib/ui/components/List'
+import VideoPlayer from '@/lib/ui/components/VideoPlayer'
 
 enum EAnkhUi {
   Appbar = 'Appbar',
@@ -26,39 +27,33 @@ enum EAnkhUi {
   Card = 'Card',
   Dialog = 'Dialog',
   IconButton = 'IconButton',
-  ListSection = 'ListSection',
+  AnkhUiList = 'AnkhUiList',
   Snackbar = 'Snackbar',
   TextInput = 'TextInput',
-  Video = 'Video',
+  VideoPlayer = 'VideoPlayer',
 }
-
-// Map EAnkhUi to UI components
-export const AnkhUiMap: Record<EAnkhUi, React.ComponentType<any>> = {
-  [EAnkhUi.Appbar]: Appbar,
-  [EAnkhUi.Button]: Button,
-  [EAnkhUi.Card]: Card,
-  [EAnkhUi.Dialog]: Dialog,
-  [EAnkhUi.IconButton]: IconButton,
-  [EAnkhUi.ListSection]: ListSection,
-  [EAnkhUi.Snackbar]: Snackbar,
-  [EAnkhUi.TextInput]: TextInput,
-  [EAnkhUi.Video]: Video,
-}
-
-// Props mapping for each UI type
 type UiPropsMap = {
   [EAnkhUi.Appbar]: AppbarProps
   [EAnkhUi.Button]: ButtonProps
   [EAnkhUi.Card]: CardProps
   [EAnkhUi.Dialog]: DialogProps
   [EAnkhUi.IconButton]: IconButtonProps
-  [EAnkhUi.ListSection]: ListSectionProps
+  [EAnkhUi.AnkhUiList]: AnkhUiListProps
   [EAnkhUi.Snackbar]: SnackbarProps
   [EAnkhUi.TextInput]: TextInputProps
-  [EAnkhUi.Video]: ReactVideoProps
+  [EAnkhUi.VideoPlayer]: ReactVideoProps
 }
-
-// Discriminated union for IAnkhUi
+export const AnkhUiMap: Record<EAnkhUi, React.ComponentType<any>> = {
+  [EAnkhUi.Appbar]: Appbar,
+  [EAnkhUi.Button]: Button,
+  [EAnkhUi.Card]: Card,
+  [EAnkhUi.Dialog]: Dialog,
+  [EAnkhUi.IconButton]: IconButton,
+  [EAnkhUi.AnkhUiList]: AnkhUiList,
+  [EAnkhUi.Snackbar]: Snackbar,
+  [EAnkhUi.TextInput]: TextInput,
+  [EAnkhUi.VideoPlayer]: VideoPlayer,
+}
 export type IAnkhUi = {
   [K in keyof UiPropsMap]: {
     id: string
@@ -175,12 +170,41 @@ export const AnkhConfig: IAnkhConfig = {
       uis: [
         {
           id: v4(),
-          ui: EAnkhUi.Video,
-          props: { source: { uri: '@/assets/videos/lesson-01.mp4' } },
+          ui: EAnkhUi.VideoPlayer,
+          props: {
+            source: {
+              uri: 'http://localhost:8081/assets/videos/lesson-01.mp4',
+            },
+          },
         },
         {
           id: v4(),
-          ui: EAnkhUi.ListSection,
+          ui: EAnkhUi.AnkhUiList,
+          props: {
+            id: v4(),
+            items: [
+              {
+                description: 'Lorem ipsum and dollar Schein.',
+                title: 'Uno',
+                icon: { left: 'play-circle' },
+              },
+              {
+                description: 'Billie Gates wieder besser jetzt.',
+                title: 'Dos',
+                icon: { left: 'play-circle' },
+              },
+              {
+                description: 'Die drei bäumen sich auf zu einer Triangle.',
+                title: 'Tree',
+                icon: { left: 'play-circle' },
+              },
+              {
+                description: 'Der Rosenquark ist ein essbarer Stein.',
+                title: 'Quark',
+                icon: { left: 'play-circle' },
+              },
+            ],
+          },
         },
       ],
     },
