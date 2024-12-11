@@ -18,8 +18,8 @@ import {
 } from 'react-native-paper'
 import type { ReactVideoProps } from 'react-native-video'
 
-import AnkhUiList, { type AnkhUiListProps } from '@/lib/ui/components/List'
-import VideoPlayer from '@/lib/ui/components/VideoPlayer'
+import AnkhUiList, { type AnkhUiListProps } from '../lib/ui/components/List'
+import VideoPlayer from '../lib/ui/components/VideoPlayer'
 
 export enum EAnkhUi {
   Appbar = 'Appbar',

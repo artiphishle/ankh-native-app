@@ -3,9 +3,10 @@ import { Tabs, router } from 'expo-router'
 import React, { useCallback } from 'react'
 import { Appbar, Menu, Tooltip } from 'react-native-paper'
 
-import { AnkhConfig } from '@/config/ankh'
 import Locales from '@/lib/locales'
 import { TabBar, TabsHeader } from '@/lib/ui'
+
+import { AnkhConfig } from '../../config/ankh'
 
 const TabLayout = () => {
   const ANKH = AnkhConfig

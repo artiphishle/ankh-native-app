@@ -14,9 +14,10 @@ import {
 } from 'react-native-paper'
 import * as Yup from 'yup'
 
-import { AnkhConfig as ANKH } from '@/config/ankh'
 import Locales from '@/lib/locales'
 import { styles } from '@/lib/ui'
+
+import { AnkhConfig as ANKH } from '../..//config/ankh'
 
 enum ESignUpStatus {
   Default,
@@ -72,9 +73,9 @@ export default function SignUp() {
 
   const { cognito } = ANKH.auth
   const { userAttributes = {} } = cognito
-  const { logo, themes } = ANKH.brand
-  const [theme] = themes.filter((theme) => theme.active)
-  const { colors } = theme
+  // const { /* logo, */ themes } = ANKH.brand
+  // const [theme] = themes.filter((theme) => theme.active)
+  // const { colors } = theme
 
   const ids = Object.keys(userAttributes)
   const customFields: IAnkhFormField[] = ids.map((id) => {

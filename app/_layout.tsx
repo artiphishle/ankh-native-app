@@ -13,13 +13,12 @@ import React from 'react'
 import { Platform, useColorScheme } from 'react-native'
 import { PaperProvider } from 'react-native-paper'
 
-import { AnkhConfig, EAnkhAuthMode } from '@/config/ankh'
-import Locales from '@/lib/locales'
-import { Setting } from '@/lib/types'
-import { StackHeader, Themes } from '@/lib/ui'
-
 import outputs from '../amplify_outputs.json'
-
+import { AnkhConfig } from '../config/ankh'
+import { EAnkhAuthMode } from '../config/types'
+import Locales from '../lib/locales'
+import { Setting } from '../lib/types'
+import { StackHeader, Themes } from '../lib/ui'
 import '@aws-amplify/ui-react/styles.css'
 
 Amplify.configure(outputs)

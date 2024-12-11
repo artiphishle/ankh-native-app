@@ -7,9 +7,10 @@ import { router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { Avatar, Button, Surface } from 'react-native-paper'
 
-import { AnkhConfig } from '@/config/ankh'
 import Locales from '@/lib/locales'
 import { styles } from '@/lib/ui'
+
+import { AnkhConfig } from '../../../config/ankh'
 
 enum ESignOutStatus {
   Default,

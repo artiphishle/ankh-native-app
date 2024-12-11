@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-native",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "paths": {
+      "@/lib/*": ["../lib"]
+    },
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES5"
+  },
+  "files": ["./init.ts"]
+}

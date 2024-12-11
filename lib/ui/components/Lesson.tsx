@@ -1,8 +1,10 @@
 import { Fragment } from 'react'
 import { Surface, useTheme } from 'react-native-paper'
 
-import { AnkhConfig as ANKH, AnkhUiMap, type IAnkhUi } from '@/config/ankh'
 import { styles } from '@/lib/ui/styles'
+
+import { AnkhConfig as ANKH } from '../../../config/ankh'
+import { AnkhUiMap, type IAnkhUi } from '../../../config/types'
 
 export default function Lesson() {
   const theme = useTheme()
